@@ -1,3 +1,14 @@
 /target/
 **/*.rs.bk
 Cargo.lock
+
+# Credentials and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*credentials*
+*secret*
+
