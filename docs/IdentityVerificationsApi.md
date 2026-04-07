@@ -1,0 +1,110 @@
+# \IdentityVerificationsApi
+
+All URIs are relative to *https://bank.sandbox.cybrid.app*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**create_identity_verification**](IdentityVerificationsApi.md#create_identity_verification) | **POST** /api/identity_verifications | Create Identity Verification
+[**get_identity_verification**](IdentityVerificationsApi.md#get_identity_verification) | **GET** /api/identity_verifications/{identity_verification_guid} | Get Identity Verification
+[**list_identity_verifications**](IdentityVerificationsApi.md#list_identity_verifications) | **GET** /api/identity_verifications | List Identity Verifications
+
+
+
+## create_identity_verification
+
+> models::IdentityVerification create_identity_verification(post_identity_verification)
+Create Identity Verification
+
+Creates an Identity Verification.  ## Identity Verifications  Identity Verifications confirm an individual's identity with for the purpose of inclusion on the platform. This know-your-customer (KYC) process is a requirement for individuals to be able to transact. At present, we offer support for Cybrid performing the verification or working with partners to accept their KYC/AML process and have it attested to in our platform.  ## State  | State | Description | |-------|-------------| | storing | The Platform is storing the identity verification details in our private store | | waiting | The Platform is waiting for the customer to start the identity verification process | | pending | The Platform is waiting for the customer to finish the identity verification process | | reviewing | The Platform is waiting for compliance to review the identity verification results | | expired | The identity verification process has expired | | completed | The identity verification process has been completed |  ## Outcome  | State | Description | |-------|-------------| | passed | The customer has passed the identity verification process | | failed | The customer has failed the identity verification process |  ## Failure Codes  | Code | Description | |-------|-------------| | id_check_failure | Failure due to an issue verifying the provided ID | | id_quality_check_failure | Failure due to an issue verifying the provided ID based on the image quality | | id_barcode_check_failure | Failure due to an issue verifying the provided ID based on the barcode | | id_mrz_check_failure | Failure due to an issue verifying the provided ID based on the machine-readable zone (MRZ) | | id_presence_check_failure | Failure due to an issue verifying the provided ID based on the presence of the ID | | id_expiration_check_failure | Failure due to an issue verifying the provided ID based on the expiration date | | id_double_side_check_failure | Failure due to an issue verifying the provided ID based on both sides not being provided | | id_type_allowed_check_failure | Failure due to an issue verifying the provided ID based on the type provided | | id_country_allowed_check_failure | Failure due to an issue verifying the provided ID based on the issuing country | | id_digital_replica_check_failure | Failure due to an issue verifying the provided ID based on it being a digital replica | | id_paper_replica_check_failure | Failure due to an issue verifying the provided ID based on it being a paper replica | | database_check_failure | Failure due to an issue verifying the provided information against authoritative data sources | | selfie_failure | Failure due to an issue verifying the provided selfie photo | | selfie_pose_check_failure | Failure due to an issue verifying the provided selfie photo based on incorrect poses | | selfie_quality_check_failure | Failure due to an issue verifying the provided selfie photo based on the image quality | | country_comparison_check_failure | Failure due the customer verification being performed out of country | | duplicate_person_check_failure | Failure due to a customer already existing for this person | | prohibited_person_check_failure | Failure due to a person being on prohibited from accessing the service | | name_check_failure | Failure due to an issue verifying the name of the person | | address_check_failure | Failure due to an issue verifying the address of the person | | account_number_check_failure | Failure due to an issue verifying the account number of the person | | dob_check_failure | Failure due to an issue verifying the date of birth of the person | | id_number_check_failure | Failure due to an issue verifying an identification number of the person | | phone_number_check_failure | Failure due to an issue verifying the phone number of the person | | email_address_check_failure | Failure due to an issue verifying the email address of the person | | document_type_check_failure | Failure due to the type of document provided not being the correct type | | document_quality_check_failure | Failure due to an issue verifying the document based on the image quality | | document_check_failure | Failure due to an issue verifying the documents | | name_comparison_check_failure | Failure due to a mismatch between the name on the customer account and the name on the provided documents | | compliance_rejection | Failure due to compliance rejecting the identity verification | | review_required | The verification is inconclusive and requires a manual review | | user_canceled | Failure due to the user canceling the identity verification | | plaid_failure | Failure due to an issue interacting with Plaid | | plaid_item_login_required | Failure due to the Plaid token for the account requiring re-login | | plaid_invalid_product | Failure due to the Plaid product not being supported (contact support) | | plaid_no_accounts | Failure due to the Plaid token having access to no accounts | | plaid_item_not_found | Failure due to Plaid not being able to find the associated account | | decision_timeout | Failure due to an issue verifying the email address of the person | | requested_failure | In sandbox, the caller requested that the process failed | | deleted_account | Failure due to the bank account having been deleted before a decision was made | |pep_check_failure| Failure due to the person being on a Politically Exposed Persons (PEP) list | |media_check_failure| Failure due to the person being on Adverse Media list | |watchlist_check_failure| Failure due to the person being on a known government or international watchlist or sanctions list |    Required scope: **identity_verifications:execute**
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**post_identity_verification** | [**PostIdentityVerification**](PostIdentityVerification.md) |  | [required] |
+
+### Return type
+
+[**models::IdentityVerification**](IdentityVerification.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_identity_verification
+
+> models::IdentityVerificationWithDetails get_identity_verification(identity_verification_guid, include_pii)
+Get Identity Verification
+
+Retrieves an identity verification.  Required scope: **identity_verifications:read** Optional scope: **identity_verifications:pii:read**.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**identity_verification_guid** | **String** | Identifier for the identity verification. | [required] |
+**include_pii** | Option<**bool**> | Include PII in the response (requires **identity_verifications:pii:read** scope). |  |
+
+### Return type
+
+[**models::IdentityVerificationWithDetails**](IdentityVerificationWithDetails.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## list_identity_verifications
+
+> models::IdentityVerificationList list_identity_verifications(page, per_page, guid, bank_guid, customer_guid, counterparty_guid, state, r#type, method)
+List Identity Verifications
+
+Retrieves a list of identity verifications. Records are sorted by creation date in descending order.  Required scope: **identity_verifications:read**
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**page** | Option<**i32**> | The page index to retrieve. |  |
+**per_page** | Option<**i32**> | The number of entities per page to return. |  |
+**guid** | Option<**String**> | Comma separated guids to list identity verifications for. |  |
+**bank_guid** | Option<**String**> | Comma separated bank_guids to list identity verifications for. |  |
+**customer_guid** | Option<**String**> | Comma separated customer_guids to list identity verifications for. |  |
+**counterparty_guid** | Option<**String**> | Comma separated counterparty_guids to list identity verifications for. |  |
+**state** | Option<**String**> | Comma separated states to list identity verifications for. |  |
+**r#type** | Option<**String**> | Comma separated types to list identity verifications for. |  |
+**method** | Option<**String**> | Comma separated methods to list identity verifications for. |  |
+
+### Return type
+
+[**models::IdentityVerificationList**](IdentityVerificationList.md)
+
+### Authorization
+
+[oauth2](../README.md#oauth2), [BearerAuth](../README.md#BearerAuth)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+

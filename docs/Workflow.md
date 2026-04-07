@@ -1,0 +1,18 @@
+# Workflow
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**guid** | Option<**String**> | Auto-generated unique identifier for the workflow. | [optional]
+**bank_guid** | Option<**String**> | The associated banks's identifier. | [optional]
+**customer_guid** | Option<**String**> | The associated customer's identifier. | [optional]
+**r#type** | Option<**String**> | The type of workflow; one of plaid. | [optional]
+**state** | Option<**String**> | The state of the workflow; one of storing, completed, or failed. | [optional]
+**failure_code** | Option<**String**> | The failure code for failed workflows. | [optional]
+**created_at** | Option<**String**> | ISO8601 datetime the record was created at. | [optional]
+**updated_at** | Option<**String**> | ISO8601 datetime the record was last updated at. | [optional]
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+
