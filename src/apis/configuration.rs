@@ -10,7 +10,7 @@
 
 
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct Configuration {
     pub base_path: String,
     pub user_agent: Option<String>,
@@ -21,12 +21,37 @@ pub struct Configuration {
     pub api_key: Option<ApiKey>,
 }
 
+// Custom Debug implementation to redact sensitive fields
+impl std::fmt::Debug for Configuration {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Configuration")
+            .field("base_path", &self.base_path)
+            .field("user_agent", &self.user_agent)
+            .field("client", &"<reqwest::Client>")
+            .field("basic_auth", &self.basic_auth.as_ref().map(|_| "<redacted>"))
+            .field("oauth_access_token", &self.oauth_access_token.as_ref().map(|_| "<redacted>"))
+            .field("bearer_access_token", &self.bearer_access_token.as_ref().map(|_| "<redacted>"))
+            .field("api_key", &self.api_key.as_ref().map(|_| "<redacted>"))
+            .finish()
+    }
+}
+
 pub type BasicAuth = (String, Option<String>);
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct ApiKey {
     pub prefix: Option<String>,
     pub key: String,
+}
+
+// Custom Debug implementation to redact sensitive API key
+impl std::fmt::Debug for ApiKey {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ApiKey")
+            .field("prefix", &self.prefix)
+            .field("key", &"<redacted>")
+            .finish()
+    }
 }
 
 
@@ -38,10 +63,17 @@ impl Configuration {
 
 impl Default for Configuration {
     fn default() -> Self {
+        // Create client with secure defaults: 10s connect timeout, 30s request timeout
+        let client = reqwest::Client::builder()
+            .connect_timeout(std::time::Duration::from_secs(10))
+            .timeout(std::time::Duration::from_secs(30))
+            .build()
+            .expect("Failed to create HTTP client");
+
         Configuration {
             base_path: "https://bank.sandbox.cybrid.app".to_owned(),
             user_agent: Some("OpenAPI-Generator/v0.128.109/rust".to_owned()),
-            client: reqwest::Client::new(),
+            client,
             basic_auth: None,
             oauth_access_token: None,
             bearer_access_token: None,
